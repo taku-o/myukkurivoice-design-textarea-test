@@ -1,0 +1,36 @@
+<html>
+<head>
+<style>
+div.form {
+    position: static;
+    --tab-height: 40px;
+    --tab-width: 300px;
+    --textarea-height: 200px;
+    --textarea-width: 800px;
+}
+textarea {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+div.tab {
+    width: var(--tab-width);
+    height: var(--tab-height);
+    z-index: 1;
+    position: absolute;
+    top: calc(var(--textarea-height) - var(--tab-height));
+    left: calc(var(--textarea-width) - var(--tab-width));
+    background-color: gray;
+}
+</style>
+</head>
+<body>
+    <div class="form">
+        <textarea></textarea>
+        <div class="tab"></div>
+    </div
+</body>
+</html>
