@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<style>
+div.form {
+    position: static;
+    --textarea-height: 200px;
+    --textarea-width: 800px;
+}
+textarea#input {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+textarea#view {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: var(--textarea-height);
+    left: 0px;
+
+    letter-spacing: 5px;
+}
+</style>
+
+</head>
+<body>
+<div class="form">
+    <textarea id="input">bbbbbb</textarea>
+    <textarea id="view" readonly>aaaaaa</textarea>
+</div
+</body>
+
+<script>
+const editor = document.getElementById("input");
+const viewer = document.getElementById("view");
+
+// copy editor.value to viewer
+editor.addEventListener("keyup", (event) => {
+  viewer.textContent = editor.value;
+});
+
+
+
+</script>
+
+</html>
