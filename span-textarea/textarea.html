@@ -1,0 +1,66 @@
+<html>
+<head>
+
+<style>
+div.form {
+    position: static;
+    --textarea-height: 200px;
+    --textarea-width: 800px;
+}
+textarea#input {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+textarea#view {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: var(--textarea-height);
+    left: 0px;
+    font-family : monospace;
+}
+</style>
+
+</head>
+<body>
+<div class="form">
+    <textarea id="input">bbbbbb</textarea>
+    <textarea id="view" readonly>aaaaaa</textarea>
+</div
+</body>
+
+<script>
+const editor = document.getElementById("input");
+const viewer = document.getElementById("view");
+
+// copy editor.value to viewer
+editor.addEventListener("keyup", (event) => {
+  let inputText = editor.value;
+  let newText = '';
+  let isBeforeChar = false;
+  for (var i = 0; i < inputText.length; i++) {
+      let ch = inputText[i];
+      if (ch.match(/[_,+']/)) {
+          newText += ch + ' ';
+          isBeforeChar = false;
+      } else if (ch.match(/[、。]/)) {
+          newText += ch;
+          isBeforeChar = false;
+      } else {
+          if (isBeforeChar) {
+              newText += '　';
+          }
+          newText += ch;
+          isBeforeChar = true;
+      }
+  }
+  viewer.textContent = newText;
+});
+</script>
+
+</html>
