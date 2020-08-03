@@ -1,0 +1,89 @@
+<html>
+<head>
+
+<style>
+div.form {
+    position: static;
+    --textarea-height: 200px;
+    --textarea-width: 800px;
+}
+textarea#input {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-family: monospace;
+    font-size: 17px;
+}
+div#view {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: var(--textarea-height);
+    left: 0px;
+    font-family: monospace;
+    font-size: 17px;
+    border: 1px solid black;
+}
+select#list {
+    display: none;
+    position: absolute;
+    top: calc(var(--textarea-height) * 2);
+    left: 0px;
+    min-width: 70px;
+    width: auto;
+}
+span.clickable {
+    background-color:yellow;
+}
+</style>
+
+</head>
+<body>
+<div class="form">
+    <textarea id="input">bbbbbb</textarea>
+    <div id="view">コ　ン　ニ<span class="clickable">、</span>チ　ワ</div>
+
+    <select id="list">
+        <option value="　">　</option>
+        <option value="、">、</option>
+        <option value="。">。</option>
+        <option value=",">,</option>
+        <option value="_">_</option>
+        <option value="'">'</option>
+        <option value="+">+</option>
+    </select>
+</div
+</body>
+
+<script>
+const editor = document.getElementById("input");
+const viewer = document.getElementById("view");
+const list = document.getElementById("list");
+
+const mgY = -9;
+const mgX = 21;
+
+const clickables = document.getElementsByClassName("clickable");
+for (i = 0; i < clickables.length; i ++) {
+  clickables[i].addEventListener("click", (event) => {
+      let viewerRect = viewer.getBoundingClientRect();
+      list.style.top = event.offsetY + viewerRect.top + mgY;
+      list.style.left = event.offsetX + mgX;
+      list.style.display = "block";
+      list.size = 6;
+
+      list.addEventListener("change", (event) => {
+          console.log(list.value);
+          list.style.display = "none";
+      });
+      //console.log(viewerRect.top);
+      //console.log(event);
+  });
+}
+</script>
+
+</html>
