@@ -1,0 +1,74 @@
+<html>
+<head>
+<style>
+div.form {
+}
+
+/*
+.form select#sel {
+    overflow-y: hidden;
+    min-width: 100px;
+    width: auto;
+    cursor: pointer; 
+    -webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+*/
+
+#sel {
+    overflow-y: hidden;
+    min-width: 100px;
+    width: auto;
+	display: block;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #444;
+	line-height: 1.3;
+	padding: 1px 1px 1px 1px;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+#sel:hover {
+	border-color: #888;
+}
+#sel:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222; 
+	outline: none;
+}
+#sel option {
+	font-weight:normal;
+}
+
+</style>
+</head>
+<body>
+
+<div class="form">
+    <select id="sel" size="7">
+        <option value="　">　</option>
+        <option value="、">、</option>
+        <option value="。">。</option>
+        <option value=",">,</option>
+        <option value="_">_</option>
+        <option value="+">+</option>
+        <option value="'">'</option>
+    </select>
+</div>
+
+</body>
+</html>
