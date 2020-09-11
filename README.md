@@ -7,5 +7,6 @@
 * clickable-textarea ... textarea contains clickable char.
 * floating-listbox ... display floating listbox.
 * expand-listbox-design ... floating listbox design for app.
+    * merged-box ... merge upper design.
 
 

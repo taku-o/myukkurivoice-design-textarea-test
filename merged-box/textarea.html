@@ -1,0 +1,169 @@
+<html>
+<head>
+<style>
+
+div.form {
+    position: static;
+    --tab-height: 40px;
+    --tab-width: 300px;
+    --textarea-height: 200px;
+    --textarea-width: 800px;
+}
+textarea#input {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+div#view {
+    width: var(--textarea-width);
+    height: var(--textarea-height);
+    z-index: 0;
+    position: absolute;
+    top: var(--textarea-height);
+    left: 0px;
+    font-family: monospace;
+    font-size: 17px;
+    border: 1px solid black;
+}
+div.tab {
+    width: var(--tab-width);
+    height: var(--tab-height);
+    z-index: 1;
+    position: absolute;
+    top: calc(var(--textarea-height) - var(--tab-height));
+    left: calc(var(--textarea-width) - var(--tab-width));
+    background-color: gray;
+}
+select#list {
+    display: none;
+    position: absolute;
+    top: calc(var(--textarea-height) * 2);
+    left: 0px;
+    min-width: 70px;
+    width: auto;
+}
+
+#sel {
+	display: none;
+    position: absolute;
+    top: calc(var(--textarea-height) * 2);
+    left: 0px;
+    min-width: 70px;
+    width: auto;
+    overflow-y: hidden;
+    min-width: 100px;
+    width: auto;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #444;
+	line-height: 1.3;
+	padding: 1px 1px 1px 1px;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+#sel:hover {
+	border-color: #888;
+}
+#sel:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222; 
+	outline: none;
+}
+#sel option {
+	font-weight:normal;
+}
+
+span.clickable {
+}
+</style>
+</head>
+<body>
+    <div class="form">
+        <textarea id="input">bbbbbb</textarea>
+        <div id="view">aaaaaa</div>
+        <div class="tab"></div>
+
+        <select id="sel" size="7">
+            <option value="　">　</option>
+            <option value="、">、</option>
+            <option value="。">。</option>
+            <option value=",">,</option>
+            <option value="_">_</option>
+            <option value="+">+</option>
+            <option value="'">'</option>
+        </select>
+    </div
+</body>
+
+<script>
+const editor = document.getElementById("input");
+const viewer = document.getElementById("view");
+const list = document.getElementById("sel");
+
+const mgY = -9;
+const mgX = 21;
+
+// copy editor.value to viewer
+editor.addEventListener("keyup", (event) => {
+  let inputText = editor.value;
+  let newText = '';
+  let isBeforeChar = false;
+  for (var i = 0; i < inputText.length; i++) {
+      let ch = inputText[i];
+      if (ch.match(/[_,+']/)) {
+          newText += '<span class="clickable">';
+          newText += ch + ' ';
+          newText += '</span>';
+          isBeforeChar = false;
+      } else if (ch.match(/[、。]/)) {
+          newText += '<span class="clickable">';
+          newText += ch;
+          newText += '</span>';
+          isBeforeChar = false;
+      } else {
+          newText += '<span class="clickable">';
+          if (isBeforeChar) {
+              newText += '　';
+          }
+          newText += ch;
+          newText += '</span>';
+          isBeforeChar = true;
+      }
+  }
+  viewer.innerHTML = newText;
+
+  let clickables = document.getElementsByClassName("clickable");
+  for (i = 0; i < clickables.length; i ++) {
+      clickables[i].addEventListener("click", (event) => {
+          let viewerRect = viewer.getBoundingClientRect();
+          list.style.top = event.offsetY + viewerRect.top + mgY;
+          list.style.left = event.offsetX + mgX;
+          list.style.display = "block";
+          list.size = 6;
+          list.addEventListener("change", (event) => {
+              console.log(list.value);
+              list.style.display = "none";
+          });
+      });
+  }
+});
+</script>
+
+</html>
+
