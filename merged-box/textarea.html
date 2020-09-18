@@ -120,7 +120,7 @@ const mgY = -9;
 const mgX = 21;
 
 // copy editor.value to viewer
-editor.addEventListener("keyup", (event) => {
+editor.addEventListener("keyup", (keyupEvent) => {
   let inputText = editor.value;
   let newText = '';
   let isBeforeChar = false;
@@ -150,15 +150,24 @@ editor.addEventListener("keyup", (event) => {
 
   let clickables = document.getElementsByClassName("clickable");
   for (i = 0; i < clickables.length; i ++) {
-      clickables[i].addEventListener("click", (event) => {
+      clickables[i].addEventListener("click", (spanSelectEvent) => {
           let viewerRect = viewer.getBoundingClientRect();
-          list.style.top = event.offsetY + viewerRect.top + mgY;
-          list.style.left = event.offsetX + mgX;
+          list.style.top = spanSelectEvent.offsetY + viewerRect.top + mgY;
+          list.style.left = spanSelectEvent.offsetX + mgX;
           list.style.display = "block";
           list.size = 6;
-          list.addEventListener("change", (event) => {
-              console.log(list.value);
-              list.style.display = "none";
+
+          //console.log(spanSelectEvent);
+          //console.log(spanSelectEvent.srcElement);
+          //console.log(spanSelectEvent.srcElement.innerText);
+
+          list.addEventListener("change", (listboxSelectEvent) => {
+              //console.log(listboxSelectEvent);
+              //console.log(listboxSelectEvent.srcElement.value);
+              let selected = listboxSelectEvent.srcElement.value;
+              listboxSelectEvent.srcElement.style.display = "none";
+
+              spanSelectEvent.srcElement.innerText = selected;
           });
       });
   }
