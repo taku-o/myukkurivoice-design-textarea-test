@@ -1,0 +1,207 @@
+<html>
+<head>
+<style>
+
+div.form {
+    position: static;
+    --selector-height: 40px;
+    --selector-width: 300px;
+    --editor-height: 200px;
+    --editor-width: 800px;
+}
+
+textarea#editor {
+    width: var(--editor-width);
+    height: var(--editor-height);
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: block;
+}
+div#panel {
+    width: var(--editor-width);
+    height: var(--editor-height);
+    z-index: 0;
+    position: absolute;
+    /*top: var(--editor-height);*/
+    top: 0px;
+    left: 0px;
+    font-family: monospace;
+    font-size: 17px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: none;
+}
+div#switcher {
+    width: var(--selector-width);
+    height: var(--selector-height);
+    z-index: 2;
+    position: absolute;
+    top: calc(var(--editor-height) - var(--selector-height));
+    left: calc(var(--editor-width) - var(--selector-width));
+    background-color: gray;
+}
+
+select#selector {
+	display: none;
+    position: absolute;
+    top: calc(var(--editor-height) * 2);
+    left: 0px;
+    min-width: 70px;
+    width: auto;
+    overflow-y: hidden;
+    min-width: 100px;
+    width: auto;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #444;
+	line-height: 1.3;
+	padding: 1px 1px 1px 1px;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+select#selector:hover {
+	border-color: #888;
+}
+select#selector:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222; 
+	outline: none;
+}
+select#selector option {
+	font-weight:normal;
+}
+
+span.clickable {
+}
+</style>
+</head>
+<body>
+
+<!-- UI -->
+<div class="form">
+    <textarea id="editor">bbbbbb</textarea>
+    <div id="panel">aaaaaa</div>
+    <div id="switcher"></div>
+
+    <select id="selector" size="7">
+        <option value="　">　</option>
+        <option value="、">、</option>
+        <option value="。">。</option>
+        <option value=",">,</option>
+        <option value="_">_</option>
+        <option value="+">+</option>
+        <option value="'">'</option>
+    </select>
+</div
+
+</body>
+
+<script>
+const switcher = document.getElementById("switcher");
+const editor = document.getElementById("editor");
+const panel = document.getElementById("panel");
+const selector = document.getElementById("selector");
+
+// switchPanel
+function switchPanel() {
+    let editorVisibled = document.defaultView.getComputedStyle(editor, null).getPropertyValue('display');
+    if (editorVisibled == 'none') {
+        switchToEditor();
+    } else {
+        switchToPanel();
+    }
+}
+function switchToEditor() {
+    editor.style.display = 'block';
+    panel.style.display = 'none';
+    updateEditorText();
+}
+function switchToPanel() {
+    editor.style.display = 'none';
+    panel.style.display = 'block';
+    setupClickableTag();
+}
+switcher.addEventListener("click", switchPanel);
+
+// input reflection
+function updatePanelText() {
+  let inputText = editor.value;
+
+  let newText = '';
+  let isBeforeChar = false;
+  for (var i = 0; i < inputText.length; i++) {
+      let ch = inputText[i];
+      if (ch.match(/[_,+'、。]/)) {
+          newText += '<span class="clickable">';
+          newText += ch;
+          newText += '</span>';
+          isBeforeChar = false;
+      } else {
+          newText += '<span class="clickable">';
+          if (isBeforeChar) {
+              newText += '　';
+          }
+          newText += ch;
+          newText += '</span>';
+          isBeforeChar = true;
+      }
+  }
+
+  panel.innerHTML = newText;
+}
+function updateEditorText() {
+    let inputText = panel.innerText;
+    console.log(inputText);
+    editor.innerText = inputText;
+}
+editor.addEventListener("keyup", updatePanelText);
+
+// show popup list
+const selectorMgY = -9;
+const selectorMgX = 21;
+var selectedClickable = null;
+function showSelector(clickEv) {
+    let viewerRect = panel.getBoundingClientRect();
+    selector.style.top = clickEv.offsetY + viewerRect.top + selectorMgY;
+    selector.style.left = clickEv.offsetX + selectorMgX;
+    selector.style.display = "block";
+    selector.size = 6;
+    selectedClickable = clickEv.srcElement;
+}
+function setupClickableTag() {
+    let clickables = document.getElementsByClassName("clickable");
+    for (i = 0; i < clickables.length; i ++) {
+        clickables[i].removeEventListener('click', showSelector);
+        clickables[i].addEventListener("click", showSelector);
+    }
+}
+
+// select from listbox
+function selectSelector(selectEv) {
+    let selected = selector.value;
+    selector.style.display = "none";
+    if (selectedClickable) {
+        selectedClickable.innerText = selected;
+    }
+    selectedClickable = null;
+}
+selector.addEventListener("change", selectSelector);
+</script>
+
+</html>
+
